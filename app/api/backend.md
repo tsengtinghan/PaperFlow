@@ -10,6 +10,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 **Response:**
 - `packageRows` (List[PackageRow])
 
+frontend: upload files and create a package
+
 ---------------------------------------------------------------------------------------------
 
 ### GET /getPackagesRows
@@ -19,6 +21,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 **Response:**
 - `packageRows` (List[PackageRow])
 
+frontend: display all the packages in table
+
 ---------------------------------------------------------------------------------------------
 
 ### GET /getPackage
@@ -27,6 +31,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 
 **Response:**
 - `package` (Package)
+
+fonrtend: click on a package row to view the package
 
 ---------------------------------------------------------------------------------------------
 
@@ -38,6 +44,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 **Response:**
 - `packageFormRows` (List[PackageFormRow])
 
+frontend: create a package form (google form)
+
 ---------------------------------------------------------------------------------------------
 
 ### GET /getPackageForm
@@ -47,6 +55,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 **Response:**
 - `packageForm`: The package form.
 
+frontend: get the google form link and names and stuff
+
 ---------------------------------------------------------------------------------------------
 
 ### GET /getPackageFormRows
@@ -55,6 +65,8 @@ All PackageRows or PackageFormRows are to be displayed in the table in the front
 
 **Response:**
 - `packageFormRows` (List[PackageFormRows]): A list of package forms with minimal details.
+
+frontend: display all the package forms in table
 
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
