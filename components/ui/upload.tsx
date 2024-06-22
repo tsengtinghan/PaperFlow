@@ -25,12 +25,12 @@ const props: UploadProps = {
   },
 };
 
-const UploadApp: React.FC = () => (
+const App: React.FC = () => (
   <Dragger {...props}>
-    <p className="flex justify-center">
+    <p className="ant-upload-drag-icon">
       <Inbox />
     </p>
-    <p className="text-sm">Click or drag file to this area to upload</p>
+    <p className="ant-upload-text">Click or drag file to this area to upload</p>
     <p className="ant-upload-hint">
       Support for a single or bulk upload. Strictly prohibited from uploading company data or other
       banned files.
@@ -38,4 +38,4 @@ const UploadApp: React.FC = () => (
   </Dragger>
 );
 
-export default UploadApp;
+export default App;
