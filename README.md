@@ -1,6 +1,8 @@
 ## Typeform fields
 Data Type: string
+
 Required: Yes
+
 Valid Values:
 
 - calendly
