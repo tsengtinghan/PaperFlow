@@ -3,32 +3,32 @@
       {
         "packageId": "pf001",
         "packageName": "Laser Lemonade Machine",
-        "PackageStatus": "Laser Lemonade Entry"
+        "packageStatus": "Laser Lemonade Entry"
       },
       {
         "packageId": "pf002",
         "packageName": "Hypernova Headphones",
-        "PackageStatus": "Hypernova Sound"
+        "packageStatus": "Hypernova Sound"
       },
       {
         "packageId": "pf003",
         "packageName": "AeroGlow Desk Lamp",
-        "PackageStatus": "AeroLighting Solution"
+        "packageStatus": "AeroLighting Solution"
       },
       {
         "packageId": "pf004",
         "packageName": "TechTonic Energy Drink",
-        "PackageStatus": "TechTonic Refresh"
+        "packageStatus": "TechTonic Refresh"
       },
       {
         "packageId": "pf005",
         "packageName": "Gamer Gear Pro Controller",
-        "PackageStatus": "Pro Gaming Control"
+        "packageStatus": "Pro Gaming Control"
       },
       {
         "packageId": "pf006",
         "packageName": "Luminous VR Headset",
-        "PackageStatus": "Luminous Virtuality"
+        "packageStatus": "Luminous Virtuality"
       }
     ]
   }
