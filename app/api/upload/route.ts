@@ -6,5 +6,5 @@ export async function POST(request: Request): Promise<Response> {
   const file2 = formData.get('files[1]');
   console.log(file1);
   console.log(file2);
-  return new Response(data, {});
+  return new Response(file1, {});
 }

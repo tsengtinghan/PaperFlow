@@ -1,30 +1,63 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 
 function FileUpload() {
-  // Initialize state to hold a list of files and the package name
   const [files, setFiles] = useState<File[]>([]);
   const [packageName, setPackageName] = useState('');
+
+  useEffect(() => {
+    // Request notification permission on component mount
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData();
     
-    // Append each file to formData
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
     
-    // Append the package name to formData
     formData.append('packageName', packageName);
 
-    // Post formData to the server
     fetch('/api/upload', {
       method: 'POST',
       body: formData,
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+      console.log(data);
+      pollPackageStatus(data.packageId); 
+    })
     .catch(error => console.error('Error:', error));
+  };
+
+  const pollPackageStatus = (packageId : number) => {
+    const interval = setInterval(() => {
+      fetch(`/api/status/${packageId}`)
+        .then(response => response.json())
+        .then(status => {
+          console.log('Checking status:', status);
+          if (status.isComplete) {
+            clearInterval(interval);
+            console.log('Package creation is complete.');
+            showNotification('Package Ready', 'Your package has been successfully created!');
+          }
+        })
+        .catch(error => {
+          console.error('Error polling package status:', error);
+          clearInterval(interval);
+        });
+    }, 2000); // Poll every 2000 milliseconds (2 seconds)
+  };
+
+  const showNotification = (title : string, body : string) => {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body, icon: '/path/to/icon.png' }); // Customize your icon
+    } else {
+      alert(`${title}: ${body}`); // Fallback to alert if notifications are not permitted
+    }
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
