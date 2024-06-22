@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 function FileUpload() {
-  // Initialize state to hold a list of files
-  const [files, setFiles] = useState([]);
+  // Initialize state to hold a list of files and the package name
+  const [files, setFiles] = useState<File[]>([]);
+  const [packageName, setPackageName] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData();
-
+    
+    // Append each file to formData
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
-
     
+    // Append the package name to formData
+    formData.append('packageName', packageName);
+
+    // Post formData to the server
     fetch('/api/upload', {
       method: 'POST',
       body: formData,
@@ -22,12 +27,25 @@ function FileUpload() {
     .catch(error => console.error('Error:', error));
   };
 
-  const handleFileChange = (event) => {
-    setFiles([...event.target.files]);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFiles(Array.from(event.target.files));
+    }
+  };
+
+  const handlePackageNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPackageName(event.target.value);
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center space-y-4">
+      <input 
+        type="text" 
+        placeholder="Enter package name" 
+        value={packageName}
+        onChange={handlePackageNameChange} 
+        className="p-2 rounded border border-gray-300"
+      />
       <input 
         type="file" 
         multiple 
