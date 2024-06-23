@@ -1,10 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { Upload, File, X, Loader } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 function FileUpload() {
   const [files, setFiles] = useState<File[]>([]);
   const [packageName, setPackageName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({ title: "", description: "" });
 
   useEffect(() => {
     if (Notification.permission !== "granted") {
@@ -12,7 +15,7 @@ function FileUpload() {
     }
   }, []);
 
-  const handleRemoveFile = (index : number) => {
+  const handleRemoveFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
@@ -33,7 +36,7 @@ function FileUpload() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // pollPackageStatus(data.packageId);
+        pollPackageStatus(data.packageId);
       })
       .catch((error) => console.error("Error:", error));
   };
@@ -41,11 +44,12 @@ function FileUpload() {
   const pollPackageStatus = (packageId: number) => {
     setIsLoading(true);
     const interval = setInterval(() => {
-      fetch(`/api/status/${packageId}`)
-        .then((response) => response.text()) 
+      fetch(`http://127.0.0.1:8000/getPackageStatus?packageId=${packageId}`)
+        .then((response) => response.text())
         .then((statusText) => {
-          console.log("Checking status:", statusText);
-          if (statusText === "Complete") {
+          statusText = statusText.replace(/^"|"$/g, "").trim();
+          console.log("Formatted status text:", statusText);
+          if (statusText === "Detecting Form Boxes with YOLO") {
             clearInterval(interval);
             setIsLoading(false);
             console.log("Package creation is complete.");
@@ -57,7 +61,7 @@ function FileUpload() {
         })
         .catch((error) => {
           console.error("Error:", error);
-          clearInterval(interval); 
+          clearInterval(interval);
           showNotification(
             "Error",
             "An error occurred while checking the package status."
@@ -87,10 +91,15 @@ function FileUpload() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Upload Package</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Upload Package
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="package-name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="package-name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Package Name
             </label>
             <input
@@ -104,7 +113,10 @@ function FileUpload() {
             />
           </div>
           <div>
-            <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="file-upload"
+              className="block text-sm font-medium text-gray-700"
+            >
               Select Files
             </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -116,20 +128,34 @@ function FileUpload() {
                     className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
                   >
                     <span>Upload files</span>
-                    <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple onChange={handleFileChange} />
+                    <input
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      className="sr-only"
+                      multiple
+                      onChange={handleFileChange}
+                    />
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-gray-500">
+                  PNG, JPG, GIF up to 10MB
+                </p>
               </div>
             </div>
           </div>
           {files.length > 0 && (
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files:</h3>
+              <h3 className="text-sm font-medium text-gray-700 mb-2">
+                Uploaded Files:
+              </h3>
               <ul className="bg-gray-50 rounded-md divide-y divide-gray-200">
                 {files.map((file, index) => (
-                  <li key={index} className="px-4 py-3 flex items-center justify-between text-sm">
+                  <li
+                    key={index}
+                    className="px-4 py-3 flex items-center justify-between text-sm"
+                  >
                     <div className="flex items-center">
                       <File className="flex-shrink-0 h-5 w-5 text-gray-400 mr-3" />
                       <span className="truncate">{file.name}</span>
