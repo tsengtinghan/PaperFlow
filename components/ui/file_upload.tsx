@@ -7,7 +7,10 @@ function FileUpload() {
   const [packageName, setPackageName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState({ title: "", description: "" });
+  const [alertMessage, setAlertMessage] = useState({
+    title: "",
+    description: "",
+  });
 
   const handleRemoveFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
@@ -82,15 +85,15 @@ function FileUpload() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          Upload Package
-        </h2>
         {showAlert && (
           <Alert variant="default">
             <AlertTitle>{alertMessage.title}</AlertTitle>
             <AlertDescription>{alertMessage.description}</AlertDescription>
           </Alert>
         )}
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Upload Package
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
