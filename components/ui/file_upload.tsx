@@ -87,8 +87,8 @@ function FileUpload() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
         {showAlert && (
           <Alert variant="default">
-            <AlertTitle>{alertMessage.title}</AlertTitle>
-            <AlertDescription>{alertMessage.description}</AlertDescription>
+            <AlertTitle className="text-green-400">{alertMessage.title}</AlertTitle>
+            <AlertDescription className="text-green-200">{alertMessage.description}</AlertDescription>
           </Alert>
         )}
         <h2 className="text-2xl font-bold text-center text-gray-800">
