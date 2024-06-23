@@ -1,5 +1,6 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
+import { Widget } from '@typeform/embed-react'
 
 interface FormField {
   name: string;
@@ -18,13 +19,40 @@ interface Package {
   typeformUrl: string;
 }
 
-const ImageModal = ({ image, onClose }: { image: string; onClose: () => boolean }) => (
-  <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
+const ImageModal = ({
+  image,
+  onClose,
+}: {
+  image: string;
+  onClose: () => boolean;
+}) => (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+    onClick={onClose}
+  >
     <div className="relative max-w-4xl max-h-[90vh] w-full mx-4">
-      <img src={`http://localhost:3000/images/${image}`} alt="Expanded view" className="w-full h-full object-contain" />
-      <button onClick={onClose} className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      <img
+        src={`${image}`}
+        alt="Expanded view"
+        className="w-full h-full object-contain"
+      />
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
@@ -35,11 +63,27 @@ export default function PackagePage({ params }: { params: { id: string } }) {
   const [packageDetails, setPackageDetails] = useState<Package | null>(null);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
+  /**
+   * Extracts the filename from a full path and prepends it with '/storage/'.
+   * @param {string} fullPath The full path of the file.
+   * @returns {string} The modified path with only the filename, prefixed by '/storage/'.
+   */
+  function simplifyImagePath(fullPath: string) {
+    const filename = fullPath.split("/").pop(); // Gets the last part of the path
+    return `/storage/${filename}`;
+  }
+
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/getPackage?packageId=${params.id}`) 
+    fetch(`http://127.0.0.1:8000/getPackage?packageId=${params.id}`)
       .then((response) => response.json())
-      .then((data: Package) => setPackageDetails(data))
-      .catch((error) => console.error("Failed to fetch package details:", error));
+      .then((data: Package) => {
+        data.originalPdfPath = simplifyImagePath(data.originalPdfPath);
+        data.imagesWithBoxesPaths = data.imagesWithBoxesPaths.map(path => simplifyImagePath(path));
+        setPackageDetails(data);
+      })
+      .catch((error) =>
+        console.error("Failed to fetch package details:", error)
+      );
   }, [params.id]);
 
   if (!packageDetails) {
@@ -48,22 +92,41 @@ export default function PackagePage({ params }: { params: { id: string } }) {
 
   return (
     <div className="container px-24 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">{packageDetails.packageName}</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">
+        {packageDetails.packageName}
+      </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <h2 className="text-2xl font-semibold mb-4">Raw PDF</h2>
-          <iframe src={packageDetails.originalPdfPath} className="w-full h-96" title="Original PDF"></iframe>
+          <iframe
+            src={packageDetails.originalPdfPath}
+            className="w-full h-96"
+            title="Original PDF"
+          ></iframe>
+          <div id="widget-container" className="mt-10">
+            <Widget id="QVbl2sGj" className="w-full h-64" />
+          </div>
         </div>
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Images with Boxes</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {packageDetails.imagesWithBoxesPaths.map((image, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform hover:scale-105" onClick={() => setExpandedImage(image)}>
-                <img src={`http://localhost:3000/images/${image}`} alt={`Image with Box ${index + 1}`} className="w-full h-48 object-cover" />
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                onClick={() => setExpandedImage(image)}
+              >
+                <img
+                  src={`${image}`}
+                  alt={`Image with Box ${index + 1}`}
+                  className="w-full h-48 object-cover"
+                />
                 <div className="p-2 text-center">
-                  <span className="text-sm text-gray-600">Image {index + 1} (Click to expand)</span>
+                  <span className="text-sm text-gray-600">
+                    Image {index + 1} (Click to expand)
+                  </span>
                 </div>
               </div>
             ))}
@@ -72,7 +135,10 @@ export default function PackagePage({ params }: { params: { id: string } }) {
       </div>
 
       {expandedImage && (
-        <ImageModal image={expandedImage} onClose={() => setExpandedImage(null)} />
+        <ImageModal
+          image={expandedImage}
+          onClose={() => setExpandedImage(null)}
+        />
       )}
     </div>
   );
