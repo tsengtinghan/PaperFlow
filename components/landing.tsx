@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { ArrowRight, FileText, Clock, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+"use client";
+import React from "react";
+import { ArrowRight, FileText, Clock, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const LandingPage = () => {
   return (
@@ -24,30 +24,35 @@ const LandingPage = () => {
             Automate Your Paperwork
           </h1>
           <p className="mt-3 max-w-md mx-auto text-xl text-gray-500 sm:text-2xl md:mt-5 md:max-w-3xl">
-            Streamline your document processes, save time, and reduce errors with our intelligent automation platform.
+            Streamline your document processes, save time, and reduce errors
+            with our intelligent automation platform.
           </p>
           <div className="mt-10 flex justify-center">
-            <Button size="lg" className="px-8 py-3 text-lg">
-              Start Free Trial
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <a href="/upload">
+              <Button size="lg" className="px-8 py-3 text-lg">
+                Start Free Trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
           </div>
         </div>
 
         <div className="mt-20">
-          <h2 className="text-3xl font-extrabold text-center">Why Choose PaperFlow?</h2>
+          <h2 className="text-3xl font-extrabold text-center">
+            Why Choose PaperFlow?
+          </h2>
           <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            <FeatureCard 
+            <FeatureCard
               icon={<FileText className="h-12 w-12 text-blue-600" />}
               title="Smart Document Processing"
               description="Our AI-powered system intelligently extracts and processes information from your documents."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Clock className="h-12 w-12 text-blue-600" />}
               title="Save Time and Resources"
               description="Automate repetitive tasks and free up your team to focus on high-value activities."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Shield className="h-12 w-12 text-blue-600" />}
               title="Secure and Compliant"
               description="Bank-level encryption and compliance with major regulatory standards to keep your data safe."

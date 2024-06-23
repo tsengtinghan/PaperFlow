@@ -1,12 +1,10 @@
 'use client'
-import UploadApp from "../components/ui/upload";
-import Image from "next/image";
+import LandingPage from "@/components/landing";
 
 export default function Home() {
   return (
     <div>
-      <h1>Home</h1>
-     
+      <LandingPage />
     </div>
   );
 }

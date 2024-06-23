@@ -1,8 +1,11 @@
-'use client'
-import UploadApp from "@/components/ui/upload"
-import FileUpload from "@/components/ui/file_upload"
+"use client";
+import Navbar from "@/components/navbar";
+import FileUpload from "@/components/ui/file_upload";
 export default function UploadFiles() {
-    return (
-        <FileUpload />
-    )
+  return (
+    <div>
+      <Navbar />
+      <FileUpload />
+    </div>
+  );
 }
