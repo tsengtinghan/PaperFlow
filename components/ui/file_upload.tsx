@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import { Upload, File, X } from "lucide-react";
+import { Upload, File, X, Loader } from "lucide-react";
 
 function FileUpload() {
   const [files, setFiles] = useState<File[]>([]);
@@ -47,6 +47,7 @@ function FileUpload() {
           console.log("Checking status:", statusText);
           if (statusText === "Complete") {
             clearInterval(interval);
+            setIsLoading(false);
             console.log("Package creation is complete.");
             showNotification(
               "Package Ready",
@@ -150,10 +151,22 @@ function FileUpload() {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Upload Files
+              {isLoading ? (
+                <>
+                  <Loader className="animate-spin h-5 w-5 mr-3" />
+                  Processing...
+                </>
+              ) : (
+                "Upload Files"
+              )}
             </button>
           </div>
         </form>
+        {isLoading && (
+          <div className="text-center text-sm text-gray-500">
+            Creating your package. This may take a few moments...
+          </div>
+        )}
       </div>
     </div>
   );
