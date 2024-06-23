@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Widget } from "@typeform/embed-react";
-
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -31,6 +31,7 @@ interface Package {
   formFields: FormField[];
   filledOutPackages: filledOutPackage[];
   typeformId: string;
+  typeformUrl: string;
 }
 
 const ImageModal = ({
@@ -111,9 +112,11 @@ export default function PackagePage({ params }: { params: { id: string } }) {
 
   return (
     <div className="container px-24 py-8">
+      <Link href={packageDetails.typeformUrl}>
       <h1 className="text-3xl font-bold text-center mb-8">
         {packageDetails.packageName}
       </h1>
+      </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
