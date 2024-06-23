@@ -188,7 +188,10 @@ export default function PackagePage({ params }: { params: { id: string } }) {
       {expandedImage && (
         <ImageModal
           image={expandedImage}
-          onClose={() => setExpandedImage(null)}
+          onClose={() => {
+            setExpandedImage(null)
+            return true
+          }}
         />
       )}
     </div>
