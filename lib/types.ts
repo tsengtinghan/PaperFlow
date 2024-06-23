@@ -31,10 +31,12 @@ type CreatePackageRequest = {
   
   // Enum for package status
   enum PackageStatus {
-    DETECTING = "Detecting Form Boxes with YOLO",
-    ANALYZING = "Analyzing Form Boxes With GPT4o",
-    CREATING = "Creating Form with GPT4o",
-    COMPLETE = "Complete"
+    preprocessing = "Preprocessing",
+    detecting = "Detecting Form Boxes with YOLO",
+    analyzing = "Analyzing Form Boxes With GPT4o",
+    dedupe = "Deduplicating Form Fields",
+    create = "Creating Typeform Form",
+    complete = "Complete"
   };
   
   // Type for form fields
