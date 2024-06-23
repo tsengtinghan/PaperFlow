@@ -33,7 +33,7 @@ function FileUpload() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        pollPackageStatus(data.packageId);
+        // pollPackageStatus(data.packageId);
       })
       .catch((error) => console.error("Error:", error));
   };
