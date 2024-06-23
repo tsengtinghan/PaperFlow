@@ -83,7 +83,7 @@ function FileUpload() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
+    <div className="flex items-center justify-center min-h-screen bg-white pb-36">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
         {showAlert && (
           <Alert variant="default">
