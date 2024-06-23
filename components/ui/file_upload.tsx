@@ -21,7 +21,7 @@ function FileUpload() {
     const formData = new FormData();
 
     files.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
+      formData.append("files", file);
     });
 
     formData.append("packageName", packageName);

@@ -15,7 +15,6 @@ export default function PackageFormList() {
   const [packageFormRows, setPackageFormRows] = useState<PackageRow[]>([]);
 
   useEffect(() => {
-    // Replace '/api/packageFormRows' with your actual API endpoint or local JSON path
     fetch("/fake_data.json")
       .then((res) => res.json())
       .then((data) => setPackageFormRows(data.packageRows))

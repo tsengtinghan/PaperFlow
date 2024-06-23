@@ -49,7 +49,7 @@ export default function PackagePage({
   }, [params.id]);
 
   return (
-    <div className="container px-16 px-4 py-8">
+    <div className="container px-24 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Package Files</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -102,6 +102,8 @@ export default function PackagePage({
               </div>
             ))}
           </div>
+          <h2 className="text-2xl font-semibold mb-4 pt-5">Package form</h2>
+          <div data-tf-live="01J11J23SQH09WS4GZ4KJ86ADJ" ></div> <script src="//embed.typeform.com/next/embed.js"></script>
         </div>
       </div>
 
