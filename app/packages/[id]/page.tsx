@@ -20,6 +20,23 @@ const ImageModal = ({ image, onClose }: { image: string; onClose: () => boolean 
     </div>
   </div>
 );
+interface FormField {
+  name: string;
+  description: string;
+  formFieldType: string; // Could be further typed based on the known values for 'formFieldType'
+}
+
+interface Package {
+  packageId: string;
+  packageName: string;
+  packageStatus: string;
+  originalPdfPath: string;
+  imagesWithBoxesPaths: string[];
+  formFields: FormField[];
+  filledOutPackages: any[]; // Replace 'any' with a more specific type if the structure of filled-out packages is known
+  typeformUrl: string;
+}
+
 
 export default function PackagePage({
   params,
@@ -35,7 +52,7 @@ export default function PackagePage({
   const [expandedImage, setExpandedImage] = useState(null);
 
   useEffect(() => {
-    fetch(`/getPackage?packageId=${params.id}`)
+    fetch(`http://127.0.0.1:8000/getPackage?packageId=${params.id}`) 
       .then((response) => response.json())
       .then((data) => {
         setFiles({
@@ -50,7 +67,7 @@ export default function PackagePage({
 
   return (
     <div className="container px-24 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Package Files</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">{files.packageName}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
