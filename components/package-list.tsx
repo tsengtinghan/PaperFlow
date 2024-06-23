@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -14,11 +15,9 @@ import type { PackageRow, PackageStatus } from "@/lib/types";
 export default function PackageFormList() {
   const [packageFormRows, setPackageFormRows] = useState<PackageRow[]>([]);
 
-  // Placeholder function for showing notifications
-  // Poll package status for packages not yet complete
   const pollPackageStatus = (packageId: string, initialStatus: string) => {
     if (initialStatus === "Complete") {
-      return; // No need to poll if already complete
+      return;
     }
   
     const interval = setInterval(() => {
@@ -29,7 +28,6 @@ export default function PackageFormList() {
           if (statusText === "Complete") {
             clearInterval(interval);
           }
-          // Always update state to trigger re-render even if the status might not have changed
           setPackageFormRows((currentRows) =>
             currentRows.map((row) =>
               row.packageId === packageId ? { ...row, packageStatus: statusText as PackageStatus } : row
@@ -42,9 +40,7 @@ export default function PackageFormList() {
         });
     }, 2000);
   };
-  
 
-  // Fetch initial package rows and setup polling for those not complete
   useEffect(() => {
     fetch("http://127.0.0.1:8000/getPackagesRows")
       .then((res) => res.json())
@@ -56,29 +52,62 @@ export default function PackageFormList() {
   }, []);
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>ID</TableHead>
-          <TableHead>Package Name</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {packageFormRows.map((row, index) => (
-          <TableRow key={index}>
-            <Link href={`/packages/${row.packageId}`}>
-              <TableCell>{row.packageId}</TableCell>
-            </Link>
-            <TableCell>
-              <Link href={`/packages/${row.packageId}`}>{row.packageName}</Link>
-            </TableCell>
-            <TableCell>
-              <Link href={`/packages/${row.packageId}`}>{row.packageStatus}</Link>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Package List</h2>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-gray-100">
+              <TableHead className="font-semibold text-gray-600 px-6 py-3">ID</TableHead>
+              <TableHead className="font-semibold text-gray-600 px-6 py-3">Package Name</TableHead>
+              <TableHead className="font-semibold text-gray-600 px-6 py-3">Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {packageFormRows.map((row, index) => (
+              <TableRow key={index} className="hover:bg-gray-50 transition-colors">
+                <TableCell className="px-6 py-4">
+                  <Link href={`/packages/${row.packageId}`} className="text-blue-600 hover:text-blue-800">
+                    {row.packageId}
+                  </Link>
+                </TableCell>
+                <TableCell className="px-6 py-4">
+                  <Link href={`/packages/${row.packageId}`} className="text-gray-800 hover:text-gray-600">
+                    {row.packageName}
+                  </Link>
+                </TableCell>
+                <TableCell className="px-6 py-4">
+                  <Link href={`/packages/${row.packageId}`}>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(row.packageStatus)}`}>
+                      {row.packageStatus}
+                    </span>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
+}
+
+function getStatusColor(status: PackageStatus): string {
+  switch (status) {
+    case "Preprocessing":
+      return "bg-purple-100 text-purple-800";
+    case "Detecting Form Boxes with YOLO":
+      return "bg-blue-100 text-blue-800";
+    case "Analyzing Form Boxes With GPT4o":
+      return "bg-indigo-100 text-indigo-800";
+    case "Deduplicating Form Fields":
+      return "bg-yellow-100 text-yellow-800";
+    case "Creating Typeform Form":
+      return "bg-orange-100 text-orange-800";
+    case "Complete":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+}
+
 }
