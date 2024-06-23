@@ -3,9 +3,9 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 function FileUpload() {
   const [files, setFiles] = useState<File[]>([]);
   const [packageName, setPackageName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Request notification permission on component mount
     if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
@@ -34,12 +34,13 @@ function FileUpload() {
   };
 
   const pollPackageStatus = (packageId: number) => {
+    setIsLoading(true);
     const interval = setInterval(() => {
       fetch(`/api/status/${packageId}`)
-        .then((response) => response.json())
-        .then((status) => {
-          console.log("Checking status:", status);
-          if (status.isComplete) {
+        .then((response) => response.text()) // Using response.text() instead of response.json()
+        .then((statusText) => {
+          console.log("Checking status:", statusText);
+          if (statusText === "Complete") {
             clearInterval(interval);
             console.log("Package creation is complete.");
             showNotification(
@@ -49,8 +50,12 @@ function FileUpload() {
           }
         })
         .catch((error) => {
-          console.error("Error polling package status:", error);
-          clearInterval(interval);
+          console.error("Error:", error);
+          clearInterval(interval); // Also clear interval on error to stop further requests
+          showNotification(
+            "Error",
+            "An error occurred while checking the package status."
+          );
         });
     }, 2000);
   };
