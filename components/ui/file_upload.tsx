@@ -9,14 +9,13 @@ function FileUpload() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: "", description: "" });
 
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, []);
-
   const handleRemoveFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
+  };
+  const showNotification = (title: string, description: string) => {
+    setAlertMessage({ title, description });
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 8000); // Hide the alert after 5 seconds
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -70,14 +69,6 @@ function FileUpload() {
     }, 2000);
   };
 
-  const showNotification = (title: string, body: string) => {
-    if (Notification.permission === "granted") {
-      new Notification(title, { body, icon: "/vercel.svg" }); // Customize your icon
-    } else {
-      alert(`${title}: ${body}`); // Fallback to alert if notifications are not permitted
-    }
-  };
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFiles(Array.from(event.target.files));
@@ -94,6 +85,12 @@ function FileUpload() {
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Upload Package
         </h2>
+        {showAlert && (
+          <Alert variant="default">
+            <AlertTitle>{alertMessage.title}</AlertTitle>
+            <AlertDescription>{alertMessage.description}</AlertDescription>
+          </Alert>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
