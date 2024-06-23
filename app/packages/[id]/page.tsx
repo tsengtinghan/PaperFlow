@@ -2,6 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { Widget } from "@typeform/embed-react";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 interface FormField {
   name: string;
   description: string;
@@ -83,6 +92,9 @@ export default function PackagePage({ params }: { params: { id: string } }) {
       .then((response) => response.json())
       .then((data: Package) => {
         data.originalPdfPath = simplifyImagePath(data.originalPdfPath);
+        data.filledOutPackages = data.filledOutPackages.map((filledOutPackage) => {
+          return {pdfPath: simplifyImagePath(filledOutPackage.pdfPath), email: filledOutPackage.email}
+        });
         data.imagesWithBoxesPaths = data.imagesWithBoxesPaths.map((path) =>
           simplifyImagePath(path)
         );
@@ -94,7 +106,7 @@ export default function PackagePage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   if (!packageDetails) {
-    return <div>Loading...</div>; // Show a loading or placeholder while data is fetching
+    return <div>Loading...</div>; 
   }
 
   return (
@@ -138,6 +150,35 @@ export default function PackagePage({ params }: { params: { id: string } }) {
               </div>
             ))}
           </div>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            Filled Out Packages
+          </h2>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Email</TableHead>
+                <TableHead>PDF</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {packageDetails.filledOutPackages.map(
+                (filledOutPackage, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{filledOutPackage.email}</TableCell>
+                    <TableCell>
+                      <a
+                        href={filledOutPackage.pdfPath}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Download PDF
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
 
