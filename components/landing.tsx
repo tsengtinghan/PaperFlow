@@ -106,7 +106,15 @@ const LandingPage = () => {
   );
 };
 
-const FeatureCard = ({ icon, title, description }) => {
+const FeatureCard = ({
+  icon,
+  title,
+  description,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+}) => {
   return (
     <div className="flex flex-col items-center text-center">
       {icon}

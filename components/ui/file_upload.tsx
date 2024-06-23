@@ -51,7 +51,7 @@ function FileUpload() {
         .then((statusText) => {
           statusText = statusText.replace(/^"|"$/g, "").trim();
           console.log("Formatted status text:", statusText);
-          if (statusText === "Detecting Form Boxes with YOLO") {
+          if (statusText === "Complete") {
             clearInterval(interval);
             setIsLoading(false);
             console.log("Package creation is complete.");
@@ -88,7 +88,7 @@ function FileUpload() {
         {showAlert && (
           <Alert variant="default">
             <AlertTitle className="text-green-400">{alertMessage.title}</AlertTitle>
-            <AlertDescription className="text-green-200">{alertMessage.description}</AlertDescription>
+            <AlertDescription >{alertMessage.description}</AlertDescription>
           </Alert>
         )}
         <h2 className="text-2xl font-bold text-center text-gray-800">

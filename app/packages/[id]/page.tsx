@@ -1,11 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Widget } from '@typeform/embed-react'
+import { Widget } from "@typeform/embed-react";
 
 interface FormField {
   name: string;
   description: string;
-  formFieldType: string; // You can define more specific types for better type checking.
+  formFieldType: string;
+}
+
+interface filledOutPackage {
+  pdfPath: string;
+  email: string;
 }
 
 interface Package {
@@ -15,8 +20,8 @@ interface Package {
   originalPdfPath: string;
   imagesWithBoxesPaths: string[];
   formFields: FormField[];
-  filledOutPackages: any[]; // Use a specific type if you know the structure of filled-out packages.
-  typeformUrl: string;
+  filledOutPackages: filledOutPackage[];
+  typeformId: string;
 }
 
 const ImageModal = ({
@@ -78,7 +83,9 @@ export default function PackagePage({ params }: { params: { id: string } }) {
       .then((response) => response.json())
       .then((data: Package) => {
         data.originalPdfPath = simplifyImagePath(data.originalPdfPath);
-        data.imagesWithBoxesPaths = data.imagesWithBoxesPaths.map(path => simplifyImagePath(path));
+        data.imagesWithBoxesPaths = data.imagesWithBoxesPaths.map((path) =>
+          simplifyImagePath(path)
+        );
         setPackageDetails(data);
       })
       .catch((error) =>
@@ -105,7 +112,7 @@ export default function PackagePage({ params }: { params: { id: string } }) {
             title="Original PDF"
           ></iframe>
           <div id="widget-container" className="mt-10">
-            <Widget id="QVbl2sGj" className="w-full h-64" />
+            <Widget id={packageDetails.typeformId} className="w-full h-64" />
           </div>
         </div>
 
