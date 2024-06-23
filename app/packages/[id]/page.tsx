@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-const ImageModal = ({ image, onClose }) => (
+const ImageModal = ({ image, onClose }: { image: string; onClose: () => boolean }) => (
   <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
     <div className="relative max-w-4xl max-h-[90vh] w-full mx-4">
       <img 
