@@ -42,7 +42,7 @@ function FileUpload() {
     setIsLoading(true);
     const interval = setInterval(() => {
       fetch(`/api/status/${packageId}`)
-        .then((response) => response.text()) // Using response.text() instead of response.json()
+        .then((response) => response.text()) 
         .then((statusText) => {
           console.log("Checking status:", statusText);
           if (statusText === "Complete") {
@@ -56,7 +56,7 @@ function FileUpload() {
         })
         .catch((error) => {
           console.error("Error:", error);
-          clearInterval(interval); // Also clear interval on error to stop further requests
+          clearInterval(interval); 
           showNotification(
             "Error",
             "An error occurred while checking the package status."
