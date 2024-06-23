@@ -24,9 +24,9 @@ function FileUpload() {
       formData.append("files", file);
     });
 
-    formData.append("packageName", packageName);
+    formData.append("name", packageName);
 
-    fetch("/api/upload", {
+    fetch("http://127.0.0.1:8000/createPackage", {
       method: "POST",
       body: formData,
     })

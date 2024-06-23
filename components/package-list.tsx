@@ -15,9 +15,9 @@ export default function PackageFormList() {
   const [packageFormRows, setPackageFormRows] = useState<PackageRow[]>([]);
 
   useEffect(() => {
-    fetch("/fake_data.json")
+    fetch("http://127.0.0.1:8000/getPackagesRows")
       .then((res) => res.json())
-      .then((data) => setPackageFormRows(data.packageRows))
+      .then((data) => setPackageFormRows(data))
       .catch((err) => console.error("Failed to fetch package form rows:", err));
   }, []);
 
