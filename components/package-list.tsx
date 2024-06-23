@@ -16,7 +16,7 @@ export default function PackageFormList() {
 
   // Placeholder function for showing notifications
   // Poll package status for packages not yet complete
-  const pollPackageStatus = (packageId, initialStatus) => {
+  const pollPackageStatus = (packageId: string, initialStatus: string) => {
     if (initialStatus === "Complete") {
       return; // No need to poll if already complete
     }
@@ -50,7 +50,7 @@ export default function PackageFormList() {
       .then((res) => res.json())
       .then((data) => {
         setPackageFormRows(data);
-        data.forEach((packageRow) => pollPackageStatus(packageRow.packageId, packageRow.packageStatus));
+        data.forEach((packageRow: PackageRow) => pollPackageStatus(packageRow.packageId, packageRow.packageStatus));
       })
       .catch((err) => console.error("Failed to fetch package form rows:", err));
   }, []);
